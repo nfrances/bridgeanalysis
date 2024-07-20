@@ -1,0 +1,28 @@
+import streamlit as st
+import pycba as cba  # Ensure pycba is installed
+import numpy as np  # For arrays
+import plotly.graph_objects as go
+
+
+
+# Set Streamlit page
+if __name__ == '__main__':
+    st.set_page_config(page_title="LLDF Calculator")
+    st.write("Define Bridge Section")
+
+# Inputs
+deck_width = st.number_input("Deck Width", min_value = 0, value = 36)
+deck_thickness = st.number_input("Deck Thickness", min_value=0, value=8)
+num_beam = st.number_input("Number of Beams", min_value=2, step=1, value=4)
+lt_oh = st.number_input("Left Overhang", min_value=0, value=3)
+rt_oh = st.number_input("Right Overhang", min_value=0, value=3)
+beam_spacings = []
+with st.expander("View/Edit Beam Spacing"):
+    for i in range(num_beam - 1):
+            spacing = st.number_input(f"Beam Space {i+1}", min_value=0.0, value=((deck_width-lt_oh-rt_oh) / (num_beam - 1)))
+            beam_spacings.append(spacing)
+
+if sum(beam_spacings) + lt_oh + rt_oh == deck_width:
+    st.success("good")
+else:
+    st.error("Check Geometry")
